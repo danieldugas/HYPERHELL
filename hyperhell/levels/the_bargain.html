@@ -2361,7 +2361,7 @@ applyTex(objects[objects.length - 1], fleshGrateTex, 1, 1, 1);
 objects.push(createObstacleCube(new Transform4D([
     [  3,        0,  0,        0, c5c.x],
     [  0,        3,  0,        0, c5c.y],
-    [  0,        0, _H/2.0,        0, c5c.z + _H/2.0],
+    [  0,        0, _H,        0, c5c.z], // half the cube is below the ground to collide with the player feet
     [  0,        0,  0,c5ar1/2.0, c5c.w],
     [  0,        0,  0,        0,      1]
   ]),
@@ -2613,7 +2613,7 @@ if (ROOM3) {
 objects.push(createObstacleCube(new Transform4D([
     [ obst_x/2.0,        0,  0,        0, obst_c.x - obst_x * -1.5],
     [  0,    W3B_DY/2.0,  0,        0, obst_c.y],
-    [  0,        0, _H/2.0,        0, obst_c.z + _H/2.0],
+    [  0,        0, _H,        0, obst_c.z],
     [  0,        0,  0,W3A_GAP/2.0, obst_c.w],
     [  0,        0,  0,        0,      1]
   ]),
@@ -2623,7 +2623,7 @@ applyTex(objects[objects.length - 1], damMetalTex, 1, 1, 1);
 objects.push(createObstacleCube(new Transform4D([
     [ obst_x/2.0,        0,  0,        0, obst_c.x - obst_x * 0.5],
     [  0,    W3B_DY/2.0,  0,        0, obst_c.y],
-    [  0,        0, _H/2.0,        0, obst_c.z + _H/2.0],
+    [  0,        0, _H,        0, obst_c.z],
     [  0,        0,  0,W3A_GAP/2.0, obst_c.w],
     [  0,        0,  0,        0,      1]
   ]),
@@ -2633,7 +2633,7 @@ applyTex(objects[objects.length - 1], damMetalTex, 1, 1, 1);
 objects.push(createObstacleCube(new Transform4D([
     [ obst_x/2.0,        0,  0,        0, obst2_c.x - obst_x * 1.5],
     [  0,    R3_ENDYL/2.0,  0,        0, obst2_c.y],
-    [  0,        0, _H/2.0,        0, obst2_c.z + _H/2.0],
+    [  0,        0, _H,        0, obst2_c.z],
     [  0,        0,  0,W3C_DW/2.0, obst2_c.w],
     [  0,        0,  0,        0,      1]
   ]),
@@ -2643,7 +2643,7 @@ applyTex(objects[objects.length - 1], damMetalTex, 1, 1, 1);
 objects.push(createObstacleCube(new Transform4D([
     [ obst_x/2.0,        0,  0,        0, obst2_c.x - obst_x * -0.5],
     [  0,    R3_ENDYL/2.0,  0,        0, obst2_c.y],
-    [  0,        0, _H/2.0,        0, obst2_c.z + _H/2.0],
+    [  0,        0, _H,        0, obst2_c.z],
     [  0,        0,  0,W3C_DW/2.0, obst2_c.w],
     [  0,        0,  0,        0,      1]
   ]),
@@ -2654,7 +2654,7 @@ applyTex(objects[objects.length - 1], damMetalTex, 1, 1, 1);
 objects.push(createObstacleCube(new Transform4D([
     [ pill_r,        0,  0,        0, pill_ref.x + obst_x],
     [  0,    R3_ENDYL/2.0,  0,        0, pill_ref.y],
-    [  0,        0, _H/2.0,        0, pill_ref.z + _H/2.0],
+    [  0,        0, _H,        0, pill_ref.z],
     [  0,        0,  0,pill_r, pill_ref.w - obst_x],
     [  0,        0,  0,        0,      1]
   ]),
@@ -2664,7 +2664,7 @@ applyTex(objects[objects.length - 1], damMetalTex, 1, 1, 1);
 objects.push(createObstacleCube(new Transform4D([
     [ pill_r,        0,  0,        0, pill_ref.x - obst_x],
     [  0,    R3_ENDYL/2.0,  0,        0, pill_ref.y],
-    [  0,        0, _H/2.0,        0, pill_ref.z + _H/2.0],
+    [  0,        0, _H,        0, pill_ref.z],
     [  0,        0,  0,pill_r, pill_ref.w - obst_x],
     [  0,        0,  0,        0,      1]
   ]),
@@ -2674,7 +2674,7 @@ applyTex(objects[objects.length - 1], damMetalTex, 1, 1, 1);
 objects.push(createObstacleCube(new Transform4D([
     [ pill_r,        0,  0,        0, pill_ref.x + obst_x],
     [  0,    R3_ENDYL/2.0,  0,        0, pill_ref.y],
-    [  0,        0, _H/2.0,        0, pill_ref.z + _H/2.0],
+    [  0,        0, _H,        0, pill_ref.z],
     [  0,        0,  0,pill_r, pill_ref.w + obst_x],
     [  0,        0,  0,        0,      1]
   ]),
@@ -2684,7 +2684,7 @@ applyTex(objects[objects.length - 1], damMetalTex, 1, 1, 1);
 objects.push(createObstacleCube(new Transform4D([
     [ pill_r,        0,  0,        0, pill_ref.x - obst_x],
     [  0,    R3_ENDYL/2.0,  0,        0, pill_ref.y],
-    [  0,        0, _H/2.0,        0, pill_ref.z + _H/2.0],
+    [  0,        0, _H,        0, pill_ref.z],
     [  0,        0,  0,pill_r, pill_ref.w + obst_x],
     [  0,        0,  0,        0,      1]
   ]),
