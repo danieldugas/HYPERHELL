@@ -3816,11 +3816,14 @@ let poIs = {
 
 
 const main_canvas = document.getElementById('canvas');
+const _urlParams = new URLSearchParams(window.location.search);
 let custom_scene = {
     visibleHyperobjects: objects,
     mainCanvas: main_canvas,
     floor_heightmap: the_bargain_floor_heightmap,
-    floorShader: bargainFloorShader
+    floorShader: bargainFloorShader,
+    custom_vox_resolution: parseInt(_urlParams.get('vox_resolution')) || 96,
+    enable_profiling: _urlParams.has('profiling')
 };
 
 // GameManager

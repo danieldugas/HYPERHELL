@@ -35,8 +35,6 @@ import { AudioManager } from './audio_manager.js';
 
 const DEBUG_MODE = false;
 
-const liddedCamRot = [-Math.PI / 2.0, 0.1, 40];
-const wideOpenCamRot = [-Math.PI / 2.0, 0.9, 80];
 const AUDIO_ASSETS = {
     mainMusic: "../audio/main_theme.mp3",
     bossMusic: "../audio/boss_theme.mp3",
@@ -2900,6 +2898,14 @@ export class TheBargainManager {
     }
 
     updateEyeMode(engineState) {
+        let liddedCamRot = [-Math.PI / 2.0, 0.1, 40];
+        let wideOpenCamRot = [-Math.PI / 2.0, 0.9, 80];
+
+        if (engineState.scene.custom_vox_resolution != null) {
+            liddedCamRot = [-Math.PI / 2.0, 0.1, 40 * engineState.scene.custom_vox_resolution / 96];
+            wideOpenCamRot = [-Math.PI / 2.0, 0.9, 80 * engineState.scene.custom_vox_resolution / 96];
+        }
+
         const dt = engineState.physics_time_s - this.gameState.lastEyeUpdateTime;
         this.gameState.lastEyeUpdateTime = engineState.physics_time_s;
         

@@ -12,7 +12,10 @@ export async function runHyperengine(scene) {
     e.preventDefault();
   });
 
-    const VOX = 96; // 96 128; // Voxel grid size
+    let VOX = 96; // 96 128; // Voxel grid size
+    if (scene.custom_vox_resolution != null) { VOX = scene.custom_vox_resolution; }
+    let PROFILING = false;
+    if (scene.enable_profiling != null) { PROFILING = scene.enable_profiling; }
 
     const PHYSICS_DT = 0.016; // Fixed ~60Hz physics timestep
     
@@ -425,9 +428,13 @@ export async function runHyperengine(scene) {
         vertices1uvlstexData[i * 8 + 7] = vertex_object_indices_data[i]; // object index TODO: gpu expects a u32, but this is a f32
     }
     // initialize acceleration structure
-    const TILE_SZ = 2;
+    let TILE_SZ = 2;
+    let MAX_ACCEL_STRUCTURE_DEPTH = 100; // lower reqs less mem but may cause rendering errors
+    if (VOX > 128) {
+        TILE_SZ = 8;
+        MAX_ACCEL_STRUCTURE_DEPTH = 50;
+    }
     const TILE_RES = VOX / TILE_SZ;
-    const MAX_ACCEL_STRUCTURE_DEPTH = 100;
     const MAX_ACCEL_STRUCTURE_SIZE = TILE_RES*TILE_RES*TILE_RES*MAX_ACCEL_STRUCTURE_DEPTH;
     const MAX_LARGE_TETRAS = tetras.length; // large tetras get stored in a separate accel structure
     const LARGE_TETRA_THRESHOLD = VOX * VOX * VOX / 64; // number of voxels required to be a large tetra. Set to VOX*VOX*VOX to disable.
@@ -625,14 +632,14 @@ fn clip_vertex(v_behind: Vertex1uvlstex, v_front: Vertex1uvlstex) -> Vertex1uvls
 
 fn add_vertex(v: Vertex1uvlstex) -> u32 {
     let idx = atomicAdd(&tetraCountsBuffer[3], 1u);
-    let n_orig = tetraCountsBuffer[1];
+    let n_orig = atomicLoad(&tetraCountsBuffer[1]);
     vertices1uvlstexBuffer[n_orig + idx] = v;
     return n_orig + idx;
 }
 
 fn add_tetra(i0: u32, i1: u32, i2: u32, i3: u32, flags: u32) {
     let idx = atomicAdd(&tetraCountsBuffer[2], 1u);
-    let n_orig = tetraCountsBuffer[0];
+    let n_orig = atomicLoad(&tetraCountsBuffer[0]);
     tetrasBuffer[n_orig + idx].i0 = i0;
     tetrasBuffer[n_orig + idx].i1 = i1;
     tetrasBuffer[n_orig + idx].i2 = i2;
@@ -774,7 +781,7 @@ fn clip_tetrahedron(
 fn clip_tetras(@builtin(global_invocation_id) global_id: vec3<u32>) {
     let S_near = 0.1;
     let tetra_index = global_id.x;
-    let orig_n_tetras = tetraCountsBuffer[0];
+    let orig_n_tetras = atomicLoad(&tetraCountsBuffer[0]);
     if (tetra_index >= orig_n_tetras) { return; }
 
     let tetra = tetrasBuffer[tetra_index];
@@ -2606,7 +2613,7 @@ fn fs_main(@builtin(position) fragCoord: vec4f) -> @location(0) vec4f {
         if (engineState.SENSOR_MODE === 0.0) {
             rotY = -Math.PI / 2.0;
             rotX = 0.;
-            dist = 50.0;  
+            dist = 50.0 * VOX / 96;
         }
 
         // Camera position (orbit around center at 2,2,2)
@@ -2948,7 +2955,6 @@ fn fs_main(@builtin(position) fragCoord: vec4f) -> @location(0) vec4f {
     let lastPhysicsFrameTime = performance.now();
 
     // --- Profiling setup ---
-    const PROFILING = false;
     const PROF_HISTORY = 60;
     let profiling_div, prof_history, prof_frame_count, prof_last_frame_time, prof_gpu_ms;
     let prof_accel_stats = null; // latest accel structure utilization stats
