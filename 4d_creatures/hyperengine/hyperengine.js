@@ -3371,8 +3371,8 @@ fn fs_main(@builtin(position) fragCoord: vec4f) -> @location(0) vec4f {
                     lines.push(`--- Accel structure ---`);
                     lines.push(`${pad("  Cells used", 22)} ${String(a.nonEmpty).padStart(6)} / ${a.totalCells} (${a.occupancy.toFixed(1)}%)`);
                     lines.push(`${pad("  Total entries", 22)} ${String(a.totalEntries).padStart(6)} / ${MAX_ACCEL_STRUCTURE_SIZE} (${a.bufferFill.toFixed(1)}%)`);
-                    lines.push(`${pad("  Max cell count", 22)} ${String(a.maxCount).padStart(6)} / ${MAX_ACCEL_STRUCTURE_DEPTH}`);
-                    lines.push(`${pad("  Mean cell count", 22)} ${a.meanCount.toFixed(1).padStart(6)}`);
+                    lines.push(`${pad("  Max cell count", 22)} ${String(a.maxCount).padStart(6)}`);
+                    lines.push(`${pad("  Mean cell count", 22)} ${a.meanCount.toFixed(1).padStart(6)} / ${MAX_ACCEL_STRUCTURE_DEPTH}`);
                     lines.push(`${pad("  Large tetras", 22)} ${String(a.numLargeTetras).padStart(6)}`);
                     lines.push(`--- Clipped tetras ---`);
                     const totalTetras = a.origTetras + a.clippedTetras;
