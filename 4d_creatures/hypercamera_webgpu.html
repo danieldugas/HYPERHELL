@@ -2074,7 +2074,7 @@ fn fs_main(@builtin(position) fragCoord: vec4f) -> @location(0) vec4f {
   // Create temp buffer for scan algorithm
   const tempBuffer = device.createBuffer({
       size: accelStructureCountsData.byteLength,
-      usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST | GPUBufferUsage.COPY_SRC // NOCOMMIT DEBUG
+      usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST | GPUBufferUsage.COPY_SRC
   });
 
   //  Create a larger buffer for parameters
@@ -2941,13 +2941,12 @@ const stage2p3BindGroup = device.createBindGroup({
     const itemsReadStart = 100000;
     readbackEncoder.copyBufferToBuffer(cellCountsBuffer, itemsReadStart * 4, readbackBuffer, 0, nItemsToRead * 4);
     readbackEncoder.copyBufferToBuffer(cellOffsetsBuffer, itemsReadStart * 4, readbackBuffer, nItemsToRead * 4, nItemsToRead * 4);
-    readbackEncoder.copyBufferToBuffer(tempBuffer, itemsReadStart * 4, readbackBuffer, nItemsToRead * 8, nItemsToRead * 4); // NOCOMMIT DEBUG
+    readbackEncoder.copyBufferToBuffer(tempBuffer, itemsReadStart * 4, readbackBuffer, nItemsToRead * 8, nItemsToRead * 4);
     device.queue.submit([readbackEncoder.finish()]);
     await readbackBuffer.mapAsync(GPUMapMode.READ);
     const readbackArray = new Uint32Array(readbackBuffer.getMappedRange());
     console.log('Cell Counts:', readbackArray.slice(0, nItemsToRead));
     console.log('Cell Offsets:', readbackArray.slice(nItemsToRead, nItemsToRead * 2));
-    console.log('Temp Buffer (NOCOMMIT DEBUG):', readbackArray.slice(nItemsToRead * 2, nItemsToRead * 3));
     readbackBuffer.unmap();
   }
   
